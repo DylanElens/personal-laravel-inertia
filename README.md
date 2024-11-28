@@ -42,26 +42,19 @@ This is a Laravel-based project using React, TypeScript, and Inertia.js for buil
 
 ## Tools & Libraries
 #### Backend
-    - Laravel: Provides backend routing, Eloquent ORM, and more.
-    - Sanctum: For API authentication.
-    - Inertia.js: Bridges Laravel with React.
+ - Laravel: Provides backend routing, Eloquent ORM, and more.
+ - Sanctum: For API authentication.
+ - Inertia.js: Bridges Laravel with React.
 
 #### Frontend
-    - React 18: Modern React for building UI components.
-    - Tailwind CSS: For styling components with utility classes.
-    - ShadCN UI: Prebuilt UI components with customization options.
-    - Ziggy: Generates Laravel routes for client-side usage.
+ - React 18: Modern React for building UI components.
+ - Tailwind CSS: For styling components with utility classes.
+ - ShadCN UI: Prebuilt UI components with customization options.
+ - Ziggy: Generates Laravel routes for client-side usage.
 
 #### Development Tools
-    - TypeScript: Type-safe development for React and JavaScript.
-    - Vite: Fast bundler for development and production.
-    - ESLint: Linting for TypeScript and React files.
-    - Prettier: Automated code formatting.
-
-#### Contribution
-    - Fork the repository.
-    - Create a new feature branch (git checkout -b feature-name).
-    - Commit your changes (git commit -m "Add new feature").
-    - Push to the branch (git push origin feature-name).
-    - Open a pull request.
+ - TypeScript: Type-safe development for React and JavaScript.
+ - Vite: Fast bundler for development and production.
+ - ESLint: Linting for TypeScript and React files.
+ - Prettier: Automated code formatting.
 
