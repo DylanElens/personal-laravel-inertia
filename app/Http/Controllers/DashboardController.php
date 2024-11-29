@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $query = $request->input('query', '');
         $page = $request->input('page', 1);
 
-        $cacheKey = $query.$page;
+        $cacheKey = 'list'.$query.$page;
 
         $jsonResponse = Cache::get($cacheKey, function () use ($query, $apiKey, $page) {
             $response = $query ? Http::withHeaders([
@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ])->get('https://api.themoviedb.org/3/discover/movie', [
                 'page' => $page,
             ]);
-            Cache::set($query.$page, $response->json(), 600);
+            Cache::set('list'.$query.$page, $response->json(), 600);
 
             return $response->json();
 
@@ -46,12 +46,18 @@ class DashboardController extends Controller
     public function show(int $id): Response
     {
         $apiKey = config('app.tmd_api_key');
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer '.$apiKey,
-        ])->get('https://api.themoviedb.org/3/movie/'.$id);
+
+        $jsonResponse = Cache::get('detail'.$id, function () use ($apiKey, $id) {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer '.$apiKey,
+            ])->get('https://api.themoviedb.org/3/movie/'.$id);
+            Cache::set('detail'.$id, $response->json(), 600);
+
+            return $response->json();
+        });
 
         return Inertia::render('MovieDetail', [
-            'movie' => fn () => $response->json(),
+            'movie' => fn () => $jsonResponse,
         ]);
     }
 }

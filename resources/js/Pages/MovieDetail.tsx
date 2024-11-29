@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageProps } from "@/types/index";
 import {
   ArrowLeft,
   Calendar,
@@ -21,9 +22,7 @@ import {
   Star,
 } from "lucide-react";
 
-interface Props {
-  movie: MovieDetails;
-}
+type Props = PageProps<{ movie: MovieDetails }>;
 
 export default function MovieDetail({ movie }: Props) {
   const formatCurrency = (amount: number) => {
