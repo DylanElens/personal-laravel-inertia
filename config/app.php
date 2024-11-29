@@ -118,6 +118,8 @@ return [
     |
     */
 
+    'tmd_api_key' => env('MOVIE_READ_API_KEY'),
+
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
