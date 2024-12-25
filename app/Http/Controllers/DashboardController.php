@@ -2,62 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\MovieRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(Request $request, MovieRepository $movieRepository): Response
     {
-        $apiKey = config('app.tmd_api_key');
-        //TODO: form validation
         $query = $request->input('query', '');
-        $page = $request->input('page', 1);
+        $page = (int) $request->input('page', 1);
 
-        $cacheKey = 'list'.$query.$page;
-
-        $jsonResponse = Cache::get($cacheKey, function () use ($query, $apiKey, $page) {
-            $response = $query ? Http::withHeaders([
-                'Authorization' => 'Bearer '.$apiKey,
-            ])->get('https://api.themoviedb.org/3/search/movie', [
-                'query' => $query,
-                'page' => $page,
-            ]) : Http::withHeaders([
-                'Authorization' => 'Bearer '.$apiKey,
-            ])->get('https://api.themoviedb.org/3/discover/movie', [
-                'page' => $page,
-            ]);
-            Cache::set('list'.$query.$page, $response->json(), 600);
-
-            return $response->json();
-
-        });
+        /** @var array $movies */
+        $movies = $query
+            ? $movieRepository->search($query, $page)
+            : $movieRepository->discover($page);
 
         return Inertia::render('Dashboard', [
-            'movies' => fn () => $jsonResponse,
-            'searchTerm' => Inertia::always($query),
-            'page' => Inertia::always($page),
+            'initialSearch' => Inertia::always($query),
+            ...$movies,
         ]);
     }
 
-    public function show(int $id): Response
+    public function show(int $id, MovieRepository $movieRepository): Response
     {
-        $apiKey = config('app.tmd_api_key');
-
-        $jsonResponse = Cache::get('detail'.$id, function () use ($apiKey, $id) {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer '.$apiKey,
-            ])->get('https://api.themoviedb.org/3/movie/'.$id);
-            Cache::set('detail'.$id, $response->json(), 600);
-
-            return $response->json();
-        });
+        $movie = $movieRepository->getMovieDetails($id);
 
         return Inertia::render('MovieDetail', [
-            'movie' => fn () => $jsonResponse,
+            'movie' => fn () => $movie,
+            'isFavorited' => Auth::user()->favorites()->where('movie_id', $id)->exists(),
         ]);
     }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { Head, router } from "@inertiajs/react";
-import { Movie, Paginated } from "@/types";
+import { Movie } from "@/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { MovieCard } from "@/components/ui/movie-card";
 import { Input } from "@/components/ui/input";
@@ -9,18 +9,24 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PageProps } from "@/types/index";
 
 type Props = PageProps<{
-  movies: Paginated<Movie>;
-  searchTerm: string;
+  results: {
+    data: Movie[];
+  };
+  initialSearch: string;
+  total_pages: number;
+  total_results: number;
   page: number;
 }>;
 
 export default function Dashboard({
-  movies: { results, total_results, total_pages },
-  searchTerm: initialSearchTerm,
-  page: initialPage,
+  results: { data: results },
+  initialSearch,
+  total_pages,
+  total_results,
+  page,
 }: Props) {
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm || "");
-  const [currentPage, setCurrentPage] = useState(initialPage || 1);
+  const [searchTerm, setSearchTerm] = useState(initialSearch || "");
+  const [currentPage, setCurrentPage] = useState(page || 1);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -28,7 +34,7 @@ export default function Dashboard({
         route("dashboard"),
         { query: searchTerm, page: currentPage },
         {
-          only: ["movies"],
+          only: ["results"],
           replace: true,
           preserveState: true,
         },

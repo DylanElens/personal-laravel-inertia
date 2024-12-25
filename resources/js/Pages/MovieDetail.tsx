@@ -21,10 +21,17 @@ import {
   Globe,
   Star,
 } from "lucide-react";
+import { FavoriteDetailButton } from "@/components/ui/favorite-detail-button";
 
-type Props = PageProps<{ movie: MovieDetails }>;
+type Props = PageProps<{
+  movie: { data: MovieDetails };
+  isFavorited: boolean;
+}>;
 
-export default function MovieDetail({ movie }: Props) {
+export default function MovieDetail({
+  movie: { data: movie },
+  isFavorited,
+}: Props) {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -104,6 +111,12 @@ export default function MovieDetail({ movie }: Props) {
                     </span>
                   </div>
                   <p className="mt-4 text-gray-700">{movie.overview}</p>
+                  <div className="mt-4">
+                    <FavoriteDetailButton
+                      movieId={movie.id}
+                      isFavorited={isFavorited}
+                    />
+                  </div>
                 </div>
               </div>
 

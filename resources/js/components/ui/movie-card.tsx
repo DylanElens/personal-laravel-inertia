@@ -9,12 +9,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 import { Link } from "@inertiajs/react";
+import { FavoriteButton } from "@/components/ui/favorite-button";
 
 interface MovieCardProps {
   movie: Movie;
+  isFavorited?: boolean;
 }
 
-export function MovieCard({ movie }: MovieCardProps) {
+export function MovieCard({ movie, isFavorited }: MovieCardProps) {
   return (
     <Link href={route("dashboard.show", { id: movie.id })} className="block">
       <Card className="overflow-hidden transition-shadow hover:shadow-lg">
@@ -29,6 +31,10 @@ export function MovieCard({ movie }: MovieCardProps) {
               {movie.vote_average.toFixed(1)}
               <Star className="w-3 h-3 ml-1 fill-current" />
             </Badge>
+            <FavoriteButton
+              movieId={movie.id}
+              isFavorited={isFavorited ?? false}
+            />
           </div>
         </CardHeader>
         <CardContent className="p-4">

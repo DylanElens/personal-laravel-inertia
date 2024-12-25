@@ -9,6 +9,7 @@ declare module 'ziggy-js' {
             "required": true
         }
     ],
+    "favorite.store": [],
     "profile.edit": [],
     "profile.update": [],
     "profile.destroy": [],

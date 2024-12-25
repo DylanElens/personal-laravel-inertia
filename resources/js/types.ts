@@ -21,7 +21,6 @@ export type MovieDetails = Movie & {
   genres: Genre[];
   homepage: string | null;
   imdb_id: string | null;
-  origin_country: string[];
   production_companies: ProductionCompany[];
   production_countries: ProductionCountry[];
   revenue: number;
@@ -34,8 +33,8 @@ export type MovieDetails = Movie & {
 type Collection = {
   id: number;
   name: string;
-  poster_path: string;
-  backdrop_path: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
 };
 
 type Genre = {
